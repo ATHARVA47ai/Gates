@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Logic Gate Simulator</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: #111;
+    width: 420px;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 0 25px rgba(0,255,255,0.2);
+}
+
+h2 {
+    text-align: center;
+    color: cyan;
+    margin-bottom: 15px;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+select, button {
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+}
+
+button {
+    grid-column: span 2;
+    background: cyan;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00dddd;
+}
+
+.simulator {
+    margin-top: 20px;
+    background: #000;
+    border-radius: 10px;
+    padding: 15px;
+    position: relative;
+    height: 180px;
+}
+
+.line {
+    position: absolute;
+    height: 4px;
+    width: 80px;
+    background: gray;
+    top: 50px;
+    left: 10px;
+    transition: 0.4s;
+}
+
+.line.b {
+    top: 100px;
+}
+
+.line.out {
+    left: 300px;
+    top: 75px;
+    width: 90px;
+}
+
+.gate {
+    position: absolute;
+    left: 140px;
+    top: 40px;
+    width: 120px;
+    height: 80px;
+    border: 3px solid cyan;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: cyan;
+    font-size: 18px;
+}
+
+.on {
+    background: lime;
+    box-shadow: 0 0 10px lime;
+}
+
+.off {
+    background: #333;
+}
+
+.output {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Logic Gate Simulator</h2>
+
+    <div class="controls">
+        <select id="a">
+            <option value="0">Input A = 0</option>
+            <option value="1">Input A = 1</option>
+        </select>
+
+        <select id="b">
+            <option value="0">Input B = 0</option>
+            <option value="1">Input B = 1</option>
+        </select>
+
+        <select id="gate">
+            <option>AND</option>
+            <option>OR</option>
+            <option>NOT</option>
+            <option>NAND</option>
+            <option>NOR</option>
+            <option>XOR</option>
+            <option>XNOR</option>
+        </select>
+
+        <button onclick="simulate()">Simulate</button>
+    </div>
+
+    <div class="simulator">
+        <div class="line" id="lineA"></div>
+        <div class="line b" id="lineB"></div>
+        <div class="gate" id="gateBox">AND</div>
+        <div class="line out" id="lineOut"></div>
+    </div>
+
+    <div class="output" id="result">Output: -</div>
+</div>
+
+<script>
+function simulate() {
+    let a = Number(document.getElementById("a").value);
+    let b = Number(document.getElementById("b").value);
+    let gate = document.getElementById("gate").value;
+
+    let output;
+
+    switch(gate) {
+        case "AND": output = a && b; break;
+        case "OR": output = a || b; break;
+        case "NOT": output = !a; break;
+        case "NAND": output = !(a && b); break;
+        case "NOR": output = !(a || b); break;
+        case "XOR": output = a ^ b; break;
+        case "XNOR": output = !(a ^ b); break;
+    }
+
+    document.getElementById("gateBox").innerText = gate;
+
+    setLine("lineA", a);
+    setLine("lineB", b);
+    setLine("lineOut", output);
+
+    document.getElementById("result").innerText =
+        "Output: " + output;
+}
+
+function setLine(id, value) {
+    let line = document.getElementById(id);
+    if (value) {
+        line.style.background = "lime";
+        line.style.boxShadow = "0 0 10px lime";
+    } else {
+        line.style.background = "gray";
+        line.style.boxShadow = "none";
+    }
+}
+</script>
+
+</body>
+</html>
